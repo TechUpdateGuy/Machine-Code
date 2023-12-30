@@ -697,7 +697,7 @@
        nst=115
 
 **** #3 MOVE: Move value from Source to Destination  ****
-* NOTE: 
+* NOTE:
 
   st=370   rt='[src] -> q'                ot3 ib oadder CLRV CLRC
   st=371   rt='[q] -> dst'                oq it5 NEWN NEWZ 
