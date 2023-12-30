@@ -1,0 +1,1823 @@
+****** TEST SETS *******
+************ test1
+0008 AC = R0
+000B X = R1
+000C SP = R2
+0000 PC = R3
+0000 CVZN = CC
+0411 | 0 | Inst #1 : NEG (X)
+0750 | 1 | Inst #2 : JSR 0008
+0008 | 2 | 
+0081 | 3 | Inst #3 : BPL 0002
+0002 | 4 | 
+1600 | 5 | Inst #4 : ADD #0008, AC
+0008 | 6 | 
+0000 | 7 | HALT
+4001 | 8 | Inst #5 : EXG AC, X
+0080 | 9 | Inst #6 : RTS
+0006 | A | 
+0007 | B | 
+0001 | C | 
+************ end test1
+
+************* start test2
+FF00 AC = R0
+8000 X = R1
+0012 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+0A01 | 0 | Inst #1 : DBRA X, 0006
+0006 | 1 | 
+0750 | 2 | Inst #2 : JSR 0008
+0008 | 3 | 
+0200 | 4 | Inst #3 : INC AC
+0092 | 5 | Inst #4 : BEQ 0000
+0000 | 6 | 
+0000 | 7 | 
+2650 | 8 | Inst #5 : SUB #FF00, 000C
+FF00 | 9 | 
+000C | A | 
+0080 | B | Inst #6 : RTS
+00FF | C | Inst #7 : SC/CC SET C V Z N 
+************* end test2
+
+************* start test3
+FFF9 | D | 
+0004 | E | 
+000D | F | 
+0000 | 10 | 
+0000 | 11 | 
+0750 | 12 | Inst #8 : JSR 0000
+0009 | 13 | 
+2600 | 14 | Inst #9 : SUB #0009, AC
+0079 | 15 | Inst #10 : SC/CC SET C N 
+0092 | 16 | Inst #11 : BEQ 0092
+0001 | 17 | 
+0200 | 18 | Inst #12 : INC AC
+2009 | 19 | Inst #13 : SUB SP, X
+0000 | 1A | HALT
+1404 | 1B | Inst #14 : ADD 0007(X), AC
+0007 | 1C | 
+0080 | 1D | Inst #15 : RTS
+000A | 1E | 
+************* end test3
+
+
+************* start test4
+0001 AC = R0
+0001 X = R1
+0001 SP = R2
+0000 PC = R3
+1111 CVZN = CC
+1003 | 0 | Inst #1 : ADD AC, PC
+FFFF | 1 | 
+1007 | 2 | Inst #2 : ADD X, PC
+FFFF | 3 | 
+100B | 4 | Inst #3 : ADD SP, PC
+FFFF | 5 | 
+100F | 6 | Inst #4 : ADD PC, PC
+FFFF | 7 | 
+FFFF | 8 | 
+FFFF | 9 | 
+FFFF | A | 
+FFFF | B | 
+FFFF | C | 
+FFFF | D | 
+0203 | E | Inst #5 : INC PC
+FFFF | F | 
+0000 | 10 | HALT
+************* end test4
+
+
+
+************* start test5
+FFFF AC = R0
+FFFF X = R1
+FFFF SP = R2
+0000 PC = R3
+1101 CVZN = CC
+0092 | 0 | Inst #1 : BEQ 000A
+000A | 1 | 
+2003 | 2 | Inst #2 : SUB AC, PC
+FFFF | 3 | 
+2007 | 4 | Inst #3 : SUB X, PC
+FFFF | 5 | 
+200B | 6 | Inst #4 : SUB SP, PC
+FFFF | 7 | 
+0203 | 8 | Inst #5 : INC PC
+FFFF | 9 | 
+200F | A | Inst #6 : SUB PC, PC
+0000 | B | HALT
+************* end test5
+
+************* start test6
+0017 AC = R0
+0019 X = R1
+001B SP = R2
+0000 PC = R3
+1111 CVZN = CC
+1103 | 0 | Inst #1 : ADD (AC), PC
+FFFF | 1 | 
+1107 | 2 | Inst #2 : ADD (X), PC
+FFFF | 3 | 
+110B | 4 | Inst #3 : ADD (SP), PC
+FFFF | 5 | 
+110F | 6 | Inst #4 : ADD (PC), PC
+0001 | 7 | 
+1203 | 8 | Inst #5 : ADD (AC)+, PC
+FFFF | 9 | 
+1207 | A | Inst #6 : ADD (X)+, PC
+FFFF | B | 
+120B | C | Inst #7 : ADD (SP)+, PC
+FFFF | D | 
+120F | E | Inst #8 : ADD (PC)+, PC
+0000 | F | 
+1303 | 10 | Inst #9 : ADD -(AC), PC
+FFFF | 11 | 
+1307 | 12 | Inst #10 : ADD -(X), PC
+FFFF | 13 | 
+130B | 14 | Inst #11 : ADD -(SP), PC
+FFFF | 15 | 
+0000 | 16 | HALT
+0001 | 17 | 
+0001 | 18 | 
+0001 | 19 | 
+0001 | 1A | 
+0001 | 1B | 
+0001 | 1C | 
+************* end test6
+
+
+************* start test7
+0017 AC = R0
+0019 X = R1
+001B SP = R2
+0000 PC = R3
+1101 CVZN = CC
+2103 | 0 | Inst #1 : SUB (AC), PC
+FFFF | 1 | 
+2107 | 2 | Inst #2 : SUB (X), PC
+FFFF | 3 | 
+210B | 4 | Inst #3 : SUB (SP), PC
+FFFF | 5 | 
+210F | 6 | Inst #4 : SUB (PC), PC
+FFFF | 7 | 
+2203 | 8 | Inst #5 : SUB (AC)+, PC
+FFFF | 9 | 
+220B | A | Inst #6 : SUB (SP)+, PC
+FFFF | B | 
+220F | C | Inst #7 : SUB (PC)+, PC
+0000 | D | 
+2303 | E | Inst #8 : SUB -(AC), PC
+FFFF | F | 
+2307 | 10 | Inst #9 : SUB -(X), PC
+FFFF | 11 | 
+230B | 12 | Inst #10 : SUB -(SP), PC
+FFFF | 13 | 
+0000 | 14 | HALT
+FFFF | 15 | 
+FFFF | 16 | 
+FFFF | 17 | 
+FFFF | 18 | 
+FFFF | 19 | 
+FFFF | 1A | 
+************* end test7
+
+************* start test8
+0000 AC = R0
+0000 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+1000 | 0 | Inst #1 : ADD AC, AC
+1004 | 1 | Inst #2 : ADD X, AC
+1008 | 2 | Inst #3 : ADD SP, AC
+100C | 3 | Inst #4 : ADD PC, AC
+1104 | 4 | Inst #5 : ADD (X), AC
+1108 | 5 | Inst #6 : ADD (SP), AC
+110C | 6 | Inst #7 : ADD (PC), AC
+1204 | 7 | Inst #8 : ADD (X)+, AC
+1208 | 8 | Inst #9 : ADD (SP)+, AC
+1304 | 9 | Inst #10 : ADD -(X), AC
+1308 | A | Inst #11 : ADD -(SP), AC
+1404 | B | Inst #12 : ADD 000E(X), AC
+000E | C | 
+1408 | D | Inst #13 : ADD 000E(SP), AC
+000E | E | 
+140C | F | Inst #14 : ADD 000E(PC), AC
+000E | 10 | 
+1504 | 11 | Inst #15 : ADD 000E, AC
+000E | 12 | 
+1508 | 13 | Inst #16 : ADD 000E, AC
+000E | 14 | 
+150C | 15 | Inst #17 : ADD 000E, AC
+000E | 16 | 
+000E | 17 | 
+1604 | 18 | Inst #18 : ADD #000E, AC
+000E | 19 | 
+1608 | 1A | Inst #19 : ADD #000E, AC
+000E | 1B | 
+160C | 1C | Inst #20 : ADD #000E, AC
+000E | 1D | 
+0000 | 1E | HALT
+************* end test8
+
+************* start test9
+0017 AC = R0
+0019 X = R1
+001B SP = R2
+0000 PC = R3
+1000 CVZN = CC
+1001 | 0 | Inst #1 : ADD AC, X
+1005 | 1 | Inst #2 : ADD X, X
+1009 | 2 | Inst #3 : ADD SP, X
+100D | 3 | Inst #4 : ADD PC, X
+1101 | 4 | Inst #5 : ADD (AC), X
+1109 | 5 | Inst #6 : ADD (SP), X
+110D | 6 | Inst #7 : ADD (PC), X
+1201 | 7 | Inst #8 : ADD (AC)+, X
+1209 | 8 | Inst #9 : ADD (SP)+, X
+1301 | 9 | Inst #10 : ADD -(AC), X
+1309 | A | Inst #11 : ADD -(SP), X
+1401 | B | Inst #12 : ADD 000E(AC), X
+000E | C | 
+1409 | D | Inst #13 : ADD 000E(SP), X
+000E | E | 
+140D | F | Inst #14 : ADD 000E(PC), X
+000E | 10 | 
+1501 | 11 | Inst #15 : ADD 000E, X
+000E | 12 | 
+1509 | 13 | Inst #16 : ADD 000E, X
+000E | 14 | 
+150D | 15 | Inst #17 : ADD 000E, X
+000E | 16 | 
+1601 | 17 | Inst #18 : ADD #000E, X
+000E | 18 | 
+1605 | 19 | Inst #19 : ADD #000E, X
+000E | 1A | 
+1609 | 1B | Inst #20 : ADD #000E, X
+000E | 1C | 
+160D | 1D | Inst #21 : ADD #000E, X
+000E | 1E | 
+0000 | 1F | HALT
+************* end test9
+
+************* start testA
+0000 AC = R0
+0000 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+1002 | 0 | Inst #1 : ADD AC, SP
+1006 | 1 | Inst #2 : ADD X, SP
+100A | 2 | Inst #3 : ADD SP, SP
+100E | 3 | Inst #4 : ADD PC, SP
+1102 | 4 | Inst #5 : ADD (AC), SP
+1106 | 5 | Inst #6 : ADD (X), SP
+110E | 6 | Inst #7 : ADD (PC), SP
+1202 | 7 | Inst #8 : ADD (AC)+, SP
+1206 | 8 | Inst #9 : ADD (X)+, SP
+1302 | 9 | Inst #10 : ADD -(AC), SP
+1306 | A | Inst #11 : ADD -(X), SP
+1402 | B | Inst #12 : ADD 000E(AC), SP
+000E | C | 
+1406 | D | Inst #13 : ADD 000E(X), SP
+000E | E | 
+140E | F | Inst #14 : ADD 000E(PC), SP
+000E | 10 | 
+1502 | 11 | Inst #15 : ADD 000E, SP
+000E | 12 | 
+1506 | 13 | Inst #16 : ADD 000E, SP
+000E | 14 | 
+150E | 15 | Inst #17 : ADD 000E, SP
+000E | 16 | 
+1602 | 17 | Inst #18 : ADD #000E, SP
+000E | 18 | 
+1606 | 19 | Inst #19 : ADD #000E, SP
+000E | 1A | 
+160A | 1B | Inst #20 : ADD #000E, SP
+000E | 1C | 
+160E | 1D | Inst #21 : ADD #000E, SP
+000E | 1E | 
+0000 | 1F | HALT
+************* end testA
+
+************* start testB
+0025 AC = R0
+0000 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+1010 | 0 | Inst #1 : ADD AC, (AC)
+1014 | 1 | Inst #2 : ADD X, (AC)
+1018 | 2 | Inst #3 : ADD SP, (AC)
+101C | 3 | Inst #4 : ADD PC, (AC)
+1020 | 4 | Inst #5 : ADD AC, (AC)+
+1024 | 5 | Inst #6 : ADD X, (AC)+
+1028 | 6 | Inst #7 : ADD SP, (AC)+
+102C | 7 | Inst #8 : ADD PC, (AC)+
+1030 | 8 | Inst #9 : ADD AC, -(AC)
+1034 | 9 | Inst #10 : ADD X, -(AC)
+1038 | A | Inst #11 : ADD SP, -(AC)
+103C | B | Inst #12 : ADD PC, -(AC)
+1610 | C | Inst #13 : ADD #000E, (AC)
+000E | D | 
+1614 | E | Inst #14 : ADD #000E, (AC)
+000E | F | 
+1618 | 10 | Inst #15 : ADD #000E, (AC)
+000E | 11 | 
+161C | 12 | Inst #16 : ADD #000E, (AC)
+000E | 13 | 
+1620 | 14 | Inst #17 : ADD #000E, (AC)+
+000E | 15 | 
+1624 | 16 | Inst #18 : ADD #000E, (AC)+
+000E | 17 | 
+1628 | 18 | Inst #19 : ADD #000E, (AC)+
+000E | 19 | 
+162C | 1A | Inst #20 : ADD #000E, (AC)+
+000E | 1B | 
+1630 | 1C | Inst #21 : ADD #000E, -(AC)
+000E | 1D | 
+1634 | 1E | Inst #22 : ADD #000E, -(AC)
+000E | 1F | 
+1638 | 20 | Inst #23 : ADD #000E, -(AC)
+000E | 21 | 
+163C | 22 | Inst #24 : ADD #000E, -(AC)
+000E | 23 | 
+0000 | 24 | HALT
+1111 | 25 | 
+FFFF | 26 | 
+1111 | 27 | 
+FFFF | 28 | 
+************* end testB
+
+************* start testC
+0029 AC = R0
+0011 X = R1
+0110 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+1040 | 0 | Inst #1 : ADD AC, 000E(AC)
+000F | 1 | 
+1044 | 2 | Inst #2 : ADD X, 000F(AC)
+000F | 3 | 
+000F | 4 | 
+104C | 5 | Inst #3 : ADD PC, 000F(AC)
+000F | 6 | 
+1050 | 7 | Inst #4 : ADD AC, 0035
+0035 | 8 | 
+1054 | 9 | Inst #5 : ADD X, 0035
+0035 | A | 
+1058 | B | Inst #6 : ADD SP, 0035
+0035 | C | 
+105C | D | Inst #7 : ADD PC, 0035
+0035 | E | 
+1640 | F | Inst #8 : ADD #EEEE, EEEE(AC)
+EEEE | 10 | 
+000E | 11 | 
+1644 | 12 | Inst #9 : ADD #EEEE, EEEE(AC)
+EEEE | 13 | 
+000E | 14 | 
+1648 | 15 | Inst #10 : ADD #EEEE, EEEE(AC)
+EEEE | 16 | 
+164C | 17 | 
+EEEE | 18 | 
+000E | 19 | 
+1650 | 1A | Inst #11 : ADD #DDDD, 0036
+DDDD | 1B | 
+0036 | 1C | 
+1654 | 1D | Inst #12 : ADD #DDDD, 0036
+DDDD | 1E | 
+0036 | 1F | 
+1658 | 20 | Inst #13 : ADD #DDDD, 0036
+DDDD | 21 | 
+0036 | 22 | 
+165C | 23 | Inst #14 : ADD #DDDD, 0036
+DDDD | 24 | 
+0036 | 25 | 
+0000 | 26 | HALT
+0000 | 27 | 
+0001 | 28 | 
+0002 | 29 | 
+0003 | 2A | 
+0004 | 2B | 
+0005 | 2C | 
+0006 | 2D | 
+0007 | 2E | 
+0008 | 2F | 
+0009 | 30 | 
+000A | 31 | 
+000B | 32 | 
+000C | 33 | 
+000D | 34 | 
+000E | 35 | 
+000F | 36 | 
+************* end testC
+
+************* start testD
+0000 AC = R0
+0025 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+1011 | 0 | Inst #1 : ADD AC, (X)
+1015 | 1 | Inst #2 : ADD X, (X)
+1019 | 2 | Inst #3 : ADD SP, (X)
+101D | 3 | Inst #4 : ADD PC, (X)
+1021 | 4 | Inst #5 : ADD AC, (X)+
+1025 | 5 | Inst #6 : ADD X, (X)+
+1029 | 6 | Inst #7 : ADD SP, (X)+
+102D | 7 | Inst #8 : ADD PC, (X)+
+1031 | 8 | Inst #9 : ADD AC, -(X)
+1035 | 9 | Inst #10 : ADD X, -(X)
+1039 | A | Inst #11 : ADD SP, -(X)
+103D | B | Inst #12 : ADD PC, -(X)
+1611 | C | Inst #13 : ADD #000E, (X)
+000E | D | 
+1615 | E | Inst #14 : ADD #000E, (X)
+000E | F | 
+1619 | 10 | Inst #15 : ADD #000E, (X)
+000E | 11 | 
+161D | 12 | Inst #16 : ADD #000E, (X)
+000E | 13 | 
+1621 | 14 | Inst #17 : ADD #000E, (X)+
+000E | 15 | 
+1625 | 16 | Inst #18 : ADD #000E, (X)+
+000E | 17 | 
+1629 | 18 | Inst #19 : ADD #000E, (X)+
+000E | 19 | 
+162D | 1A | Inst #20 : ADD #000E, (X)+
+000E | 1B | 
+1631 | 1C | Inst #21 : ADD #000E, -(X)
+000E | 1D | 
+1635 | 1E | Inst #22 : ADD #000E, -(X)
+000E | 1F | 
+1639 | 20 | Inst #23 : ADD #000E, -(X)
+000E | 21 | 
+163D | 22 | Inst #24 : ADD #000E, -(X)
+000E | 23 | 
+0000 | 24 | HALT
+1111 | 25 | 
+FFFF | 26 | 
+1111 | 27 | 
+FFFF | 28 | 
+************* end testD
+
+************* start testE
+0000 AC = R0
+0029 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+1041 | 0 | Inst #1 : ADD AC, 000E(X)
+000F | 1 | 
+1045 | 2 | Inst #2 : ADD X, 000F(X)
+000F | 3 | 
+1049 | 4 | Inst #3 : ADD SP, 000F(X)
+000F | 5 | 
+104D | 6 | Inst #4 : ADD PC, 000F(X)
+000F | 7 | 
+1051 | 8 | Inst #5 : ADD AC, 0035
+0035 | 9 | 
+1055 | A | Inst #6 : ADD X, 0035
+0035 | B | 
+1059 | C | Inst #7 : ADD SP, 0035
+0035 | D | 
+105D | E | Inst #8 : ADD PC, 0035
+0035 | F | 
+1641 | 10 | Inst #9 : ADD #EEEE, EEEE(X)
+EEEE | 11 | 
+000E | 12 | 
+1645 | 13 | Inst #10 : ADD #EEEE, EEEE(X)
+EEEE | 14 | 
+000E | 15 | 
+1649 | 16 | Inst #11 : ADD #EEEE, EEEE(X)
+EEEE | 17 | 
+000E | 18 | 
+164D | 19 | Inst #12 : ADD #EEEE, EEEE(X)
+EEEE | 1A | 
+000E | 1B | 
+1651 | 1C | Inst #13 : ADD #FFFF, 0038
+FFFF | 1D | 
+0038 | 1E | 
+1655 | 1F | Inst #14 : ADD #FFFF, 0038
+FFFF | 20 | 
+0038 | 21 | 
+1659 | 22 | Inst #15 : ADD #FFFF, 0038
+FFFF | 23 | 
+0038 | 24 | 
+165D | 25 | Inst #16 : ADD #FFFF, 0038
+FFFF | 26 | 
+0038 | 27 | 
+0000 | 28 | HALT
+0000 | 29 | 
+0001 | 2A | 
+0002 | 2B | 
+0003 | 2C | 
+0004 | 2D | 
+0005 | 2E | 
+0006 | 2F | 
+0007 | 30 | 
+0008 | 31 | 
+0009 | 32 | 
+000A | 33 | 
+000B | 34 | 
+000C | 35 | 
+000D | 36 | 
+000E | 37 | 
+000F | 38 | 
+************* end testE
+
+************* start testF
+0000 AC = R0
+0000 X = R1
+0025 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+1012 | 0 | Inst #1 : ADD AC, (SP)
+1016 | 1 | Inst #2 : ADD X, (SP)
+101A | 2 | Inst #3 : ADD SP, (SP)
+101E | 3 | Inst #4 : ADD PC, (SP)
+1022 | 4 | Inst #5 : ADD AC, (SP)+
+1026 | 5 | Inst #6 : ADD X, (SP)+
+102A | 6 | Inst #7 : ADD SP, (SP)+
+102E | 7 | Inst #8 : ADD PC, (SP)+
+1032 | 8 | Inst #9 : ADD AC, -(SP)
+1036 | 9 | Inst #10 : ADD X, -(SP)
+103A | A | Inst #11 : ADD SP, -(SP)
+103E | B | Inst #12 : ADD PC, -(SP)
+1612 | C | Inst #13 : ADD #000E, (SP)
+000E | D | 
+1616 | E | Inst #14 : ADD #000E, (SP)
+000E | F | 
+161A | 10 | Inst #15 : ADD #000E, (SP)
+000E | 11 | 
+161E | 12 | Inst #16 : ADD #000E, (SP)
+000E | 13 | 
+1622 | 14 | Inst #17 : ADD #000E, (SP)+
+000E | 15 | 
+1626 | 16 | Inst #18 : ADD #000E, (SP)+
+000E | 17 | 
+162A | 18 | Inst #19 : ADD #000E, (SP)+
+000E | 19 | 
+162E | 1A | Inst #20 : ADD #000E, (SP)+
+000E | 1B | 
+1632 | 1C | Inst #21 : ADD #000E, -(SP)
+000E | 1D | 
+1636 | 1E | Inst #22 : ADD #000E, -(SP)
+000E | 1F | 
+163A | 20 | Inst #23 : ADD #000E, -(SP)
+000E | 21 | 
+163E | 22 | Inst #24 : ADD #000E, -(SP)
+000E | 23 | 
+0000 | 24 | HALT
+1111 | 25 | 
+FFFF | 26 | 
+1111 | 27 | 
+FFFF | 28 | 
+************* end testF
+
+************* start testG
+0000 AC = R0
+0000 X = R1
+0029 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+1042 | 0 | Inst #1 : ADD AC, 000E(SP)
+000F | 1 | 
+1046 | 2 | Inst #2 : ADD X, 000F(SP)
+000F | 3 | 
+104A | 4 | Inst #3 : ADD SP, 000F(SP)
+000F | 5 | 
+104E | 6 | Inst #4 : ADD PC, 000F(SP)
+000F | 7 | 
+1052 | 8 | Inst #5 : ADD AC, 000F
+000F | 9 | 
+1056 | A | Inst #6 : ADD X, 000F
+000F | B | 
+105A | C | Inst #7 : ADD SP, 000F
+000F | D | 
+105E | E | Inst #8 : ADD PC, 000F
+000F | F | 
+1642 | 10 | Inst #9 : ADD #EEEE, EEEE(SP)
+EEEE | 11 | 
+000E | 12 | 
+1646 | 13 | Inst #10 : ADD #EEEE, EEEE(SP)
+EEEE | 14 | 
+000E | 15 | 
+164A | 16 | Inst #11 : ADD #EEEE, EEEE(SP)
+EEEE | 17 | 
+000E | 18 | 
+164E | 19 | Inst #12 : ADD #EEEE, EEEE(SP)
+EEEE | 1A | 
+000E | 1B | 
+1652 | 1C | Inst #13 : ADD #CCCC, 0035
+CCCC | 1D | 
+0035 | 1E | 
+1656 | 1F | Inst #14 : ADD #CCCC, 0035
+CCCC | 20 | 
+0035 | 21 | 
+165A | 22 | Inst #15 : ADD #CCCC, 0035
+CCCC | 23 | 
+0035 | 24 | 
+165E | 25 | Inst #16 : ADD #CCCC, 0035
+CCCC | 26 | 
+0035 | 27 | 
+0000 | 28 | HALT
+0000 | 29 | 
+0001 | 2A | 
+0002 | 2B | 
+0003 | 2C | 
+0004 | 2D | 
+0005 | 2E | 
+0006 | 2F | 
+0007 | 30 | 
+0008 | 31 | 
+0009 | 32 | 
+000A | 33 | 
+000B | 34 | 
+000C | 35 | 
+000D | 36 | 
+000E | 37 | 
+000F | 38 | 
+************* end testG
+
+// For 101F at M(4) is equivalent to 1023 
+************* start testH
+0000 AC = R0
+0000 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+1013 | 0 | Inst #1 : ADD AC, (PC)
+1017 | 1 | Inst #2 : ADD X, (PC)
+101B | 2 | Inst #3 : ADD SP, (PC)
+101F | 3 | Inst #4 : ADD PC, (PC)
+101F | 4 | Inst #5 : ADD PC, (PC)
+FFFF | 5 | 
+1027 | 6 | Inst #6 : ADD X, (PC)+
+FFFF | 7 | 
+102B | 8 | Inst #7 : ADD SP, (PC)+
+FFFF | 9 | 
+102F | A | Inst #8 : ADD PC, (PC)+
+FFFF | B | 
+1613 | C | Inst #9 : ADD #0000, (PC)
+0000 | D | 
+1617 | E | Inst #10 : ADD #0000, (PC)
+0000 | F | 161B | 10 | Inst #11 : ADD #0000, (PC)
+0000 | 11 | 
+161F | 12 | Inst #12 : ADD #0000, (PC)
+0000 | 13 | 
+1623 | 14 | Inst #13 : ADD #000E, (PC)+
+000E | 15 | 
+FFFF | 16 | 
+1627 | 17 | Inst #14 : ADD #000E, (PC)+
+000E | 18 | 
+FFFF | 19 | 
+162B | 1A | Inst #15 : ADD #000E, (PC)+
+000E | 1B | 
+FFFF | 1C | 
+162F | 1D | Inst #16 : ADD #000E, (PC)+
+000E | 1E | 
+FFFF | 1F | 
+0000 | 20 | HALT
+************* end testH
+
+
+************* start testI
+0000 AC = R0
+0000 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+1043 | 0 | Inst #1 : ADD AC, 000E(PC)
+0000 | 1 | 
+1047 | 2 | Inst #2 : ADD X, 0000(PC)
+0000 | 3 | 
+104F | 4 | Inst #3 : ADD PC, 0000(PC)
+0000 | 5 | 
+1053 | 6 | Inst #4 : ADD AC, 0029
+0029 | 7 | 
+1057 | 8 | Inst #5 : ADD X, 0029
+0029 | 9 | 
+105B | A | Inst #6 : ADD SP, 0029
+0029 | B | 
+105F | C | Inst #7 : ADD PC, 0029
+0029 | D | 
+1643 | E | Inst #8 : ADD #FFFF, FFFF(PC)
+FFFF | F | 
+0000 | 10 | 
+1647 | 11 | Inst #9 : ADD #FFFF, FFFF(PC)
+FFFF | 12 | 
+0000 | 13 | 
+164B | 14 | Inst #10 : ADD #FFFF, FFFF(PC)
+FFFF | 15 | 
+0000 | 16 | 
+164F | 17 | Inst #11 : ADD #FFFF, FFFF(PC)
+FFFF | 18 | 
+0000 | 19 | 
+1653 | 1A | Inst #12 : ADD #0000, 002A
+0000 | 1B | 
+002A | 1C | 
+1657 | 1D | Inst #13 : ADD #0000, 002A
+0000 | 1E | 
+002A | 1F | 
+165B | 20 | Inst #14 : ADD #0000, 002A
+0000 | 21 | 
+002A | 22 | 
+165F | 23 | Inst #15 : ADD #0000, 002A
+0000 | 24 | 
+002A | 25 | 
+0000 | 26 | HALT
+FFFF | 27 | 
+FFFF | 28 | 
+FFFF | 29 | 
+FFFF | 2A | 
+************* end testI
+
+************* start testJ
+0000 AC = R0
+0000 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+2000 | 0 | Inst #1 : SUB AC, AC
+2004 | 1 | Inst #2 : SUB X, AC
+2008 | 2 | Inst #3 : SUB SP, AC
+200C | 3 | Inst #4 : SUB PC, AC
+2104 | 4 | Inst #5 : SUB (X), AC
+2108 | 5 | Inst #6 : SUB (SP), AC
+210C | 6 | Inst #7 : SUB (PC), AC
+2204 | 7 | Inst #8 : SUB (X)+, AC
+2208 | 8 | Inst #9 : SUB (SP)+, AC
+2304 | 9 | Inst #10 : SUB -(X), AC
+2308 | A | Inst #11 : SUB -(SP), AC
+2404 | B | Inst #12 : SUB 000E(X), AC
+000E | C | 
+2408 | D | Inst #13 : SUB 000E(SP), AC
+000E | E | 
+240C | F | Inst #14 : SUB000E(PC), AC
+000E | 10 | 
+2504 | 11 | Inst #15 : SUB 000E, AC
+000E | 12 | 
+2508 | 13 | Inst #16 : SUB 000E, AC
+000E | 14 | 
+250C | 15 | Inst #17 : SUB 000E, AC
+000E | 16 | 
+2600 | 17 | Inst #18 : SUB #000E, AC
+000E | 18 | 
+2604 | 19 | Inst #19 : SUB #000E, AC
+000E | 1A | 
+2608 | 1B | Inst #20 : SUB #000E, AC
+000E | 1C | 
+260C | 1D | Inst #21 : SUB #000E, AC
+000E | 1E | 
+0000 | 1F | HALT
+************* end testJ
+
+************* start testK
+0017 AC = R0
+0019 X = R1
+001B SP = R2
+0000 PC = R3
+2000 CVZN = CC
+2001 | 0 | Inst #1 : SUB AC, X
+2005 | 1 | Inst #2 : SUB X, X
+2009 | 2 | Inst #3 : SUB SP, X
+200D | 3 | Inst #4 : SUB PC, X
+2101 | 4 | Inst #5 : SUB (AC), X
+2109 | 5 | Inst #6 : SUB (SP), X
+210D | 6 | Inst #7 : SUB (PC), X
+2201 | 7 | Inst #8 : SUB (AC)+, X
+2209 | 8 | Inst #9 : SUB (SP)+, X
+2301 | 9 | Inst #10 : SUB -(AC), X
+2309 | A | Inst #11 : SUB -(SP), X
+2401 | B | Inst #12 : SUB 000E(AC), X
+000E | C | 
+2409 | D | Inst #13 : SUB 000E(SP), X
+000E | E | 
+240D | F | Inst #14 : SUB 000E(PC), X
+000E | 10 | 
+2501 | 11 | Inst #15 : SUB 000E, X
+000E | 12 | 
+2509 | 13 | Inst #16 : SUB 000E, X
+000E | 14 | 
+250D | 15 | Inst #17 : SUB 000E, X
+000E | 16 | 
+2601 | 17 | Inst #18 : SUB #000E, X
+000E | 18 | 
+2605 | 19 | Inst #19 : SUB #000E, X
+000E | 1A | 
+2609 | 1B | Inst #20 : SUB #000E, X
+000E | 1C | 
+260D | 1D | Inst #21 : SUB #000E, X
+000E | 1E | 
+0000 | 1F | HALT
+************* end testK
+
+************* start testL
+0000 AC = R0
+0000 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+2002 | 0 | Inst #1 : SUB AC, SP
+2006 | 1 | Inst #2 : SUB X, SP
+200A | 2 | Inst #3 : SUB SP, SP
+200E | 3 | Inst #4 : SUB PC, SP
+2102 | 4 | Inst #5 : SUB (AC), SP
+2106 | 5 | Inst #6 : SUB (X), SP
+210E | 6 | Inst #7 : SUB (PC), SP
+2202 | 7 | Inst #8 : SUB (AC)+, SP
+2206 | 8 | Inst #9 : SUB (X)+, SP
+2302 | 9 | Inst #10 : SUB -(AC), SP
+2306 | A | Inst #11 : SUB -(X), SP
+2402 | B | Inst #12 : SUB 000E(AC), SP
+000E | C | 
+2406 | D | Inst #13 : SUB 000E(X), SP
+000E | E | 
+240E | F | Inst #14 : SUB 000E(PC), SP
+000E | 10 | 
+2502 | 11 | Inst #15 : SUB 000E, SP
+000E | 12 | 
+2506 | 13 | Inst #16 : SUB 000E, SP
+000E | 14 | 
+250E | 15 | Inst #17 : SUB 000E, SP
+000E | 16 | 
+2602 | 17 | Inst #18 : SUB #000E, SP
+000E | 18 | 
+2606 | 19 | Inst #19 : SUB #000E, SP
+000E | 1A | 
+260A | 1B | Inst #20 : SUB #000E, SP
+000E | 1C | 
+260E | 1D | Inst #21 : SUB #000E, SP
+000E | 1E | 
+0000 | 1F | HALT
+************* end testL
+
+************* start testM
+0025 AC = R0
+0000 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+2010 | 0 | Inst #1 : SUB AC, (AC)
+2014 | 1 | Inst #2 : SUB X, (AC)
+2018 | 2 | Inst #3 : SUB SP, (AC)
+201C | 3 | Inst #4 : SUB PC, (AC)
+2020 | 4 | Inst #5 : SUB AC, (AC)+
+2024 | 5 | Inst #6 : SUB X, (AC)+
+2028 | 6 | Inst #7 : SUB SP, (AC)+
+202C | 7 | Inst #8 : SUB PC, (AC)+
+2030 | 8 | Inst #9 : SUB AC, -(AC)
+2034 | 9 | Inst #10 : SUB X, -(AC)
+2038 | A | Inst #11 : SUB SP, -(AC)
+203C | B | Inst #12 : SUB PC, -(AC)
+2610 | C | Inst #13 : SUB #000E, (AC)
+000E | D | 
+2614 | E | Inst #14 : SUB #000E, (AC)
+000E | F | 
+2618 | 10 | Inst #15 : SUB #000E, (AC)
+000E | 11 | 
+261C | 12 | Inst #16 : SUB #000E, (AC)
+000E | 13 | 
+2620 | 14 | Inst #17 : SUB #000E, (AC)+
+000E | 15 | 
+2624 | 16 | Inst #18 : SUB #000E, (AC)+
+000E | 17 | 
+2628 | 18 | Inst #19 : SUB #000E, (AC)+
+000E | 19 | 
+262C | 1A | Inst #20 : SUB #000E, (AC)+
+000E | 1B | 
+2630 | 1C | Inst #21 : SUB #000E, -(AC)
+000E | 1D | 
+2634 | 1E | Inst #22 : SUB #000E, -(AC)
+000E | 1F | 
+2638 | 20 | Inst #23 : SUB #000E, -(AC)
+000E | 21 | 
+263C | 22 | Inst #24 : SUB #000E, -(AC)
+000E | 23 | 
+0000 | 24 | HALT
+2111 | 25 | 
+FFFF | 26 | 
+2111 | 27 | 
+FFFF | 28 | 
+************* end testM
+
+************* start testN
+0029 AC = R0
+0011 X = R1
+0110 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+2040 | 0 | Inst #1 : SUB AC, 000E(AC)
+000F | 1 | 
+2044 | 2 | Inst #2 : SUB X, 000F(AC)
+000F | 3 | 
+2048 | 4 | Inst #3 : SUB SP, 000F(AC)
+000F | 5 | 
+204C | 6 | Inst #4 : SUB PC, 000F(AC)
+000F | 7 | 
+2050 | 8 | Inst #5 : SUB AC, 0035
+0035 | 9 | 
+2054 | A | Inst #6 : SUB X, 0035
+0035 | B | 
+2058 | C | Inst #7 : SUB SP, 0035
+0035 | D | 
+205C | E | Inst #8 : SUB PC, 0035
+0035 | F | 
+2640 | 10 | Inst #9 : SUB #EEEE, EEEE(AC)
+EEEE | 11 | 
+000E | 12 | 
+2644 | 13 | Inst #10 : SUB #EEEE, EEEE(AC)
+EEEE | 14 | 
+000E | 15 | 
+2648 | 16 | Inst #11 : SUB #EEEE, EEEE(AC)
+EEEE | 17 | 
+000E | 18 | 
+264C | 19 | Inst #12 : SUB #EEEE, EEEE(AC)
+EEEE | 1A | 
+000E | 1B | 
+2650 | 1C | Inst #13 : SUB #DDDD, 0036
+DDDD | 1D | 
+0036 | 1E | 
+2654 | 1F | Inst #14 : SUB #DDDD, 0036
+DDDD | 20 | 
+0036 | 21 | 
+2658 | 22 | Inst #15 : SUB #DDDD, 0036
+DDDD | 23 | 
+0036 | 24 | 
+265C | 25 | Inst #16 : SUB #DDDD, 0036
+DDDD | 26 | 
+0036 | 27 | 
+0000 | 28 | HALT
+0000 | 29 | 
+0001 | 2A | 
+0002 | 2B | 
+0003 | 2C | 
+0004 | 2D | 
+0005 | 2E | 
+0006 | 2F | 
+0007 | 30 | 
+0008 | 31 | 
+0009 | 32 | 
+000A | 33 | 
+000B | 34 | 
+000C | 35 | 
+000D | 36 | 
+000E | 37 | 
+000F | 38 | 
+************* end testN
+
+************* start testO
+0000 AC = R0
+0025 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+2011 | 0 | Inst #1 : SUB AC, (X)
+2015 | 1 | Inst #2 : SUB X, (X)
+2019 | 2 | Inst #3 : SUB SP, (X)
+201D | 3 | Inst #4 : SUB PC, (X)
+2021 | 4 | Inst #5 : SUB AC, (X)+
+2025 | 5 | Inst #6 : SUB X, (X)+
+2029 | 6 | Inst #7 : SUB SP, (X)+
+202D | 7 | Inst #8 : SUB PC, (X)+
+2031 | 8 | Inst #9 : SUB AC, -(X)
+2035 | 9 | Inst #10 : SUB X, -(X)
+2039 | A | Inst #11 : SUB SP, -(X)
+203D | B | Inst #12 : SUB PC, -(X)
+2611 | C | Inst #13 : SUB #000E, (X)
+000E | D | 
+2615 | E | Inst #14 : SUB #000E, (X)
+000E | F | 
+2619 | 10 | Inst #15 : SUB #000E, (X)
+000E | 11 | 
+261D | 12 | Inst #16 : SUB #000E, (X)
+000E | 13 | 
+2621 | 14 | Inst #17 : SUB #000E, (X)+
+000E | 15 | 
+2625 | 16 | Inst #18 : SUB #000E, (X)+
+000E | 17 | 
+2629 | 18 | Inst #19 : SUB #000E, (X)+
+000E | 19 | 
+262D | 1A | Inst #20 : SUB #000E, (X)+
+000E | 1B | 
+2631 | 1C | Inst #21 : SUB #000E, -(X)
+000E | 1D | 
+2635 | 1E | Inst #22 : SUB #000E, -(X)
+000E | 1F | 
+2639 | 20 | Inst #23 : SUB #000E, -(X)
+000E | 21 | 
+263D | 22 | Inst #24 : SUB #000E, -(X)
+000E | 23 | 
+0000 | 24 | HALT
+2111 | 25 | 
+FFFF | 26 | 
+2111 | 27 | 
+FFFF | 28 | 
+************* end testO
+
+************* start testP
+0000 AC = R0
+0029 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+2041 | 0 | Inst #1 : SUB AC, 000E(X)
+000F | 1 | 
+2045 | 2 | Inst #2 : SUB X, 000F(X)
+000F | 3 | 
+2049 | 4 | Inst #3 : SUB SP, 000F(X)
+000F | 5 | 
+204D | 6 | Inst #4 : SUB PC, 000F(X)
+000F | 7 | 
+2051 | 8 | Inst #5 : SUB AC, 0035
+0035 | 9 | 
+2055 | A | Inst #6 : SUB X, 0035
+0035 | B | 
+2059 | C | Inst #7 : SUB SP, 0035
+0035 | D | 
+205D | E | Inst #8 : SUB PC, 0035
+0035 | F | 
+2641 | 10 | Inst #9 : SUB #EEEE, EEEE(X)
+EEEE | 11 | 
+000E | 12 | 
+2645 | 13 | Inst #10 : SUB #EEEE, EEEE(X)
+EEEE | 14 | 
+000E | 15 | 
+2649 | 16 | Inst #11 : SUB #EEEE, EEEE(X)
+EEEE | 17 | 
+000E | 18 | 
+264D | 19 | Inst #12 : SUB #EEEE, EEEE(X)
+EEEE | 1A | 
+000E | 1B | 
+2651 | 1C | Inst #13 : SUB #FFFF, 0038
+FFFF | 1D | 
+0038 | 1E | 
+2655 | 1F | Inst #14 : SUB #FFFF, 0038
+FFFF | 20 | 
+0038 | 21 | 
+2659 | 22 | Inst #15 : SUB #FFFF, 0038
+FFFF | 23 | 
+0038 | 24 | 
+265D | 25 | Inst #16 : SUB #FFFF, 0038
+FFFF | 26 | 
+0038 | 27 | 
+0000 | 28 | HALT
+0000 | 29 | 
+0001 | 2A | 
+0002 | 2B | 
+0003 | 2C | 
+0004 | 2D | 
+0005 | 2E | 
+0006 | 2F | 
+0007 | 30 | 
+0008 | 31 | 
+0009 | 32 | 
+000A | 33 | 
+000B | 34 | 
+000C | 35 | 
+000D | 36 | 
+000E | 37 | 
+000F | 38 | 
+************* end testP
+
+************* start testQ
+0000 AC = R0
+0000 X = R1
+0025 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+2012 | 0 | Inst #1 : SUB AC, (SP)
+2016 | 1 | Inst #2 : SUB X, (SP)
+201A | 2 | Inst #3 : SUB SP, (SP)
+201E | 3 | Inst #4 : SUB PC, (SP)
+2022 | 4 | Inst #5 : SUB AC, (SP)+
+2026 | 5 | Inst #6 : SUB X, (SP)+
+202A | 6 | Inst #7 : SUB SP, (SP)+
+202E | 7 | Inst #8 : SUB PC, (SP)+
+2032 | 8 | Inst #9 : SUB AC, -(SP)
+2036 | 9 | Inst #10 : SUB X, -(SP)
+203A | A | Inst #11 : SUB SP, -(SP)
+203E | B | Inst #12 : SUB PC, -(SP)
+2612 | C | Inst #13 : SUB #000E, (SP)
+000E | D | 
+2616 | E | Inst #14 : SUB #000E, (SP)
+000E | F | 
+261A | 10 | Inst #15 : SUB #000E, (SP)
+000E | 11 | 
+261E | 12 | Inst #16 : SUB #000E, (SP)
+000E | 13 | 
+2622 | 14 | Inst #17 : SUB #000E, (SP)+
+000E | 15 | 
+2626 | 16 | Inst #18 : SUB #000E, (SP)+
+000E | 17 | 
+262A | 18 | Inst #19 : SUB #000E, (SP)+
+000E | 19 | 
+262E | 1A | Inst #20 : SUB #000E, (SP)+
+000E | 1B | 
+2632 | 1C | Inst #21 : SUB #000E, -(SP)
+000E | 1D | 
+2636 | 1E | Inst #22 : SUB #000E, -(SP)
+000E | 1F | 
+263A | 20 | Inst #23 : SUB #000E, -(SP)
+000E | 21 | 
+263E | 22 | Inst #24 : SUB #000E, -(SP)
+000E | 23 | 
+0000 | 24 | HALT
+2111 | 25 | 
+FFFF | 26 | 
+2111 | 27 | 
+FFFF | 28 | 
+************* end testQ
+
+************* start testR
+0000 AC = R0
+0000 X = R1
+0029 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+2042 | 0 | Inst #1 : SUB AC, 000E(SP)
+000F | 1 | 
+2046 | 2 | Inst #2 : SUB X, 000F(SP)
+000F | 3 | 
+204E | 4 | Inst #3 : SUB PC, 000F(SP)
+000F | 5 | 
+204A | 6 | Inst #4 : SUB SP, 000F(SP)
+000F | 7 | 
+2052 | 8 | Inst #5 : SUB AC, 000F
+000F | 9 | 
+2056 | A | Inst #6 : SUB X, 000F
+000F | B | 
+205E | C | Inst #7 : SUB PC, 000F
+000F | D | 
+205A | E | Inst #8 : SUB SP, 000F
+000F | F | 
+2642 | 10 | Inst #9 : SUB #EEEE, EEEE(SP)
+EEEE | 11 | 
+000E | 12 | 
+2646 | 13 | Inst #10 : SUB #EEEE, EEEE(SP)
+EEEE | 14 | 
+000E | 15 | 
+264A | 16 | Inst #11 : SUB #EEEE, EEEE(SP)
+EEEE | 17 | 
+000E | 18 | 
+264E | 19 | Inst #12 : SUB #EEEE, EEEE(SP)
+EEEE | 1A | 
+000E | 1B | 
+2652 | 1C | Inst #13 : SUB #CCCC, 0035
+CCCC | 1D | 
+0035 | 1E | 
+2656 | 1F | Inst #14 : SUB #CCCC, 0035
+CCCC | 20 | 
+0035 | 21 | 
+265A | 22 | Inst #15 : SUB #CCCC, 0035
+CCCC | 23 | 
+0035 | 24 | 
+265E | 25 | Inst #16 : SUB #CCCC, 0035
+CCCC | 26 | 
+0035 | 27 | 
+0000 | 28 | HALT
+0000 | 29 | 
+0001 | 2A | 
+0002 | 2B | 
+0003 | 2C | 
+0004 | 2D | 
+0005 | 2E | 
+0006 | 2F | 
+0007 | 30 | 
+0008 | 31 | 
+0009 | 32 | 
+000A | 33 | 
+000B | 34 | 
+000C | 35 | 
+000D | 36 | 
+000E | 37 | 
+000F | 38 | 
+************* end testR
+
+// For testS, 2027 at M(4) is essenitally 2023
+************* start testS
+0000 AC = R0
+0000 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+2013 | 0 | Inst #1 : SUB AC, (PC)
+2017 | 1 | Inst #2 : SUB X, (PC)
+201B | 2 | Inst #3 : SUB SP, (PC)
+201F | 3 | Inst #4 : SUB PC, (PC)
+2027 | 4 | Inst #5 : SUB X, (PC)+
+FFFF | 5 | 
+2027 | 6 | Inst #6 : SUB X, (PC)+
+FFFF | 7 | 
+202B | 8 | Inst #7 : SUB SP, (PC)+
+FFFF | 9 | 
+202F | A | Inst #8 : SUB PC, (PC)+
+FFFF | B | 
+2613 | C | Inst #9 : SUB #0000, (PC)
+0000 | D | 
+2617 | E | Inst #10 : SUB #0000, (PC)
+0000 | F | 
+261B | 10 | Inst #11 : SUB #0000, (PC)
+0000 | 11 | 
+261F | 12 | Inst #12 : SUB #0000, (PC)
+0000 | 13 | 
+2623 | 14 | Inst #13 : SUB #000E, (PC)+
+000E | 15 | 
+FFFF | 16 | 
+2627 | 17 | Inst #14 : SUB #000E, (PC)+
+000E | 18 | 
+FFFF | 19 | 
+262B | 1A | Inst #15 : SUB #000E, (PC)+
+000E | 1B | 
+FFFF | 1C | 
+262F | 1D | Inst #16 : SUB #000E, (PC)+
+000E | 1E | 
+FFFF | 1F | 
+0000 | 20 | HALT
+************* end testS
+
+
+************* start testT
+0000 AC = R0
+0000 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+2043 | 0 | Inst #1 : SUB AC, 000E(PC)
+0000 | 1 | 
+2047 | 2 | Inst #2 : SUB X, 0000(PC)
+0000 | 3 | 
+204F | 4 | Inst #3 : SUB PC, 0000(PC)
+0000 | 5 | 
+2053 | 6 | Inst #4 : SUB AC, 0029
+0029 | 7 | 
+2057 | 8 | Inst #5 : SUB X, 0029
+0029 | 9 | 
+205B | A | Inst #6 : SUB SP, 0029
+0029 | B | 
+205F | C | Inst #7 : SUB PC, 0029
+0029 | D | 
+2643 | E | Inst #8 : SUB #FFFF, FFFF(PC)
+FFFF | F | 
+0000 | 10 | 
+2647 | 11 | Inst #9 : SUB #FFFF, FFFF(PC)
+FFFF | 12 | 
+0000 | 13 | 
+264B | 14 | Inst #10 : SUB #FFFF, FFFF(PC)
+FFFF | 15 | 
+0000 | 16 | 
+264F | 17 | Inst #11 : SUB #FFFF, FFFF(PC)
+FFFF | 18 | 
+0000 | 19 | 
+2653 | 1A | Inst #12 : SUB #0000, 002A
+0000 | 1B | 
+002A | 1C | 
+2657 | 1D | Inst #13 : SUB #0000, 002A
+0000 | 1E | 
+002A | 1F | 
+265B | 20 | Inst #14 : SUB #0000, 002A
+0000 | 21 | 
+002A | 22 | 
+265F | 23 | Inst #15 : SUB #0000, 002A
+0000 | 24 | 
+002A | 25 | 
+0000 | 26 | HALT
+FFFF | 27 | 
+FFFF | 28 | 
+FFFF | 29 | 
+FFFF | 2A | 
+************* end testT
+
+// FOR 021F at M(9) equivalent to 0220
+************* start testU
+0022 AC = R0
+0024 X = R1
+0026 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+0200 | 0 | Inst #1 : INC AC
+0201 | 1 | Inst #2 : INC X
+0202 | 2 | Inst #3 : INC SP
+0203 | 3 | Inst #4 : INC PC
+FFFF | 4 | 
+0210 | 5 | Inst #5 : INC (AC)
+0211 | 6 | Inst #6 : INC (X)
+0212 | 7 | Inst #7 : INC (SP)
+0213 | 8 | Inst #8 : INC (PC)
+021F | 9 | Inst #9 : INC (PC)
+0221 | A | Inst #10 : INC (X)+
+0222 | B | Inst #11 : INC (SP)+
+0223 | C | Inst #12 : INC (PC)+
+FFFF | D | 
+0230 | E | Inst #13 : INC -(AC)
+0231 | F | Inst #14 : INC -(X)
+0232 | 10 | Inst #15 : INC -(SP)
+0240 | 11 | Inst #16 : INC (AC)
+0004 | 12 | 
+0241 | 13 | Inst #17 : INC (X)
+0004 | 14 | 
+0242 | 15 | Inst #18 : INC (SP)
+0004 | 16 | 
+0243 | 17 | Inst #19 : INC (PC)
+0017 | 18 | 
+0250 | 19 | Inst #20 : INC 0027
+0027 | 1A | 
+0251 | 1B | Inst #21 : INC 0029
+0029 | 1C | 
+0252 | 1D | Inst #22 : INC 002B
+002B | 1E | 
+0253 | 1F | Inst #23 : INC 002D
+002D | 20 | 
+0000 | 21 | 
+0000 | 22 | 
+0000 | 23 | 
+0000 | 24 | 
+0000 | 25 | 
+0000 | 26 | 
+0000 | 27 | 
+0000 | 28 | 
+0000 | 29 | 
+0000 | 2A | 
+0000 | 2B | 
+0000 | 2C | 
+0000 | 2D | HALT
+0000 | 2E | 
+************* end testU
+
+*************start testV
+0019 AC = R0
+0019 X = R1
+0000 SP = R2
+0000 PC = R3
+0001 CVZN = CC
+2624 | 0 | Inst #1 : SUB #0001, (AC)+
+0001 | 1 | 
+0092 | 2 | Inst #2 : BEQ FFFF
+FFFF | 3 | 
+2624 | 4 | Inst #3 : SUB #0001, (AC)+
+0001 | 5 | 
+0082 | 6 | Inst #4 : BNE FFFF
+FFFF | 7 | 
+2624 | 8 | Inst #5 : SUB #0001, (AC)+
+0001 | 9 | 
+0091 | A | Inst #6 : BMI FFFF
+FFFF | B | 
+2624 | C | Inst #7 : SUB #0001, (AC)+
+0001 | D | 
+0081 | E | Inst #8 : BPL FFFF
+FFFF | F | 
+2624 | 10 | Inst #9 : SUB #0001, (AC)+
+0001 | 11 | 
+009A | 12 | Inst #10 : BLS FFFF
+FFFF | 13 | 
+2624 | 14 | Inst #11 : SUB #0001, (AC)+
+0001 | 15 | 
+00BA | 16 | Inst #12 : BHI FFFF
+FFFF | 17 | 
+0000 | 18 | 
+0000 | 19 | 
+0001 | 1A | 
+0002 | 1B | 
+0000 | 1C | HALT
+0002 | 1D | 
+0001 | 1E | 
+************* end testV
+
+*************start testW
+001F AC = R0
+0029 X = R1
+00FF SP = R2
+0000 PC = R3
+1111 CVZN = CC
+2624 | 0 | Inst #1 : SUB #0001, (AC)+
+0001 | 1 | 
+0092 | 2 | Inst #2 : BEQ 0001
+0001 | 3 | 
+FFFF | 4 | 
+2624 | 5 | Inst #3 : SUB #0001, (AC)+
+0001 | 6 | 
+0082 | 7 | Inst #4 : BNE 0001
+0001 | 8 | 
+FFFF | 9 | 
+2624 | A | Inst #5 : SUB #0001, (AC)+
+0001 | B | 
+0091 | C | Inst #6 : BMI 0001
+0001 | D | 
+FFFF | E | 
+2624 | F | Inst #7 : SUB #0001, (AC)+
+0001 | 10 | 
+0081 | 11 | Inst #8 : BPL 0001
+0001 | 12 | 
+FFFF | 13 | 
+2624 | 14 | Inst #9 : SUB #0001, (AC)+
+0001 | 15 | 
+009A | 16 | Inst #10 : BLS 0001
+0001 | 17 | 
+FFFF | 18 | 
+2624 | 19 | Inst #11 : SUB #0001, (AC)+
+0001 | 1A | 
+00BA | 1B | Inst #12 : BHI 0001
+0001 | 1C | 
+FFFF | 1D | 
+0000 | 1E | 
+0001 | 1F | 
+0000 | 20 | HALT
+0000 | 21 | 
+0002 | 22 | 
+0001 | 23 | 
+0002 | 24 | 
+************* end testW
+
+*************start testX
+000C AC = R0
+000F X = R1
+00FF SP = R2
+0000 PC = R3
+1111 CVZN = CC
+0710 | 0 | Inst #1 : JSR (AC)
+0200 | 1 | Inst #2 : INC AC
+0200 | 2 | Inst #3 : INC AC
+0720 | 3 | Inst #4 : JSR (AC)+
+0200 | 4 | Inst #5 : INC AC
+0200 | 5 | Inst #6 : INC AC
+0730 | 6 | Inst #7 : JSR -(AC)
+0740 | 7 | Inst #8 : JSR (AC)
+0002 | 8 | 
+0750 | 9 | Inst #9 : JSR 0014
+0014 | A | 
+0000 | B | HALT
+0201 | C | Inst #10 : INC X
+0080 | D | Inst #11 : RTS
+0201 | E | Inst #12 : INC X
+0080 | F | Inst #13 : RTS
+0201 | 10 | Inst #14 : INC X
+0080 | 11 | Inst #15 : RTS
+0201 | 12 | Inst #16 : INC X
+0080 | 13 | Inst #17 : RTS
+0201 | 14 | Inst #18 : INC X
+0080 | 15 | Inst #19 : RTS
+************* end testX
+
+*************start testY
+FFF9 AC = R0
+0004 X = R1
+000D SP = R2
+0000 PC = R3
+0000 CVZN = CC
+0750 | 0 | Inst #1 : JSR 0009
+0009 | 1 | 
+2600 | 2 | Inst #2 : SUB #0079, AC
+0079 | 3 | 
+0092 | 4 | Inst #3 : BEQ 0001
+0001 | 5 | 
+0200 | 6 | Inst #4 : INC AC
+2009 | 7 | Inst #5 : SUB SP, X
+0000 | 8 | HALT
+1404 | 9 | Inst #6 : ADD 0007(X), AC
+0007 | A | 
+0080 | B | Inst #7 : RTS
+000A | C | 
+************* end testY
+
+************* start testZ
+0020 AC = R0
+0022 X = R1
+0024 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+0110 | 0 | Inst #1 : CLR (AC)
+0111 | 1 | Inst #2 : CLR (X)
+0112 | 2 | Inst #3 : CLR (SP)
+0120 | 3 | Inst #4 : CLR (AC)+
+0121 | 4 | Inst #5 : CLR (X)+
+0122 | 5 | Inst #6 : CLR (SP)+
+0123 | 6 | Inst #7 : CLR (PC)+
+FFFF | 7 | 
+0130 | 8 | Inst #8 : CLR -(AC)
+0131 | 9 | Inst #9 : CLR -(X)
+0132 | A | Inst #10 : CLR -(SP)
+0140 | B | Inst #11 : CLR (AC)
+0004 | C | 
+0141 | D | Inst #12 : CLR (X)
+0004 | E | 
+0142 | F | Inst #13 : CLR (SP)
+0004 | 10 | 
+0143 | 11 | Inst #14 : CLR (PC)
+0017 | 12 | 
+0150 | 13 | Inst #15 : CLR 0027
+0027 | 14 | 
+0151 | 15 | Inst #16 : CLR 0029
+0029 | 16 | 
+0152 | 17 | Inst #17 : CLR 002B
+002B | 18 | 
+0153 | 19 | Inst #18 : CLR 002D
+002D | 1A | 
+0100 | 1B | Inst #19 : CLR AC
+0101 | 1C | Inst #20 : CLR X
+0102 | 1D | Inst #21 : CLR SP
+0113 | 1E | Inst #22 : CLR (PC)
+0000 | 1F | HALT
+FFFF | 20 | 
+FFFF | 21 | 
+FFFF | 22 | 
+FFFF | 23 | 
+FFFF | 24 | 
+FFFF | 25 | 
+FFFF | 26 | 
+FFFF | 27 | 
+FFFF | 28 | 
+FFFF | 29 | 
+FFFF | 2A | 
+FFFF | 2B | 
+FFFF | 2C | 
+************* end testZ
+
+// FOR 031F at M(4) equivalent to 0320
+************* start testa
+0020 AC = R0
+0022 X = R1
+0024 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+0310 | 0 | Inst #1 : DEC (AC)
+0312 | 1 | Inst #2 : DEC (SP)
+0313 | 2 | Inst #3 : DEC (PC)
+031F | 3 | Inst #4 : DEC (PC)
+0321 | 4 | Inst #5 : DEC (X)+
+0322 | 5 | Inst #6 : DEC (SP)+
+0323 | 6 | Inst #7 : DEC (PC)+
+FFFF | 7 | 
+0330 | 8 | Inst #8 : DEC -(AC)
+0331 | 9 | Inst #9 : DEC -(X)
+0332 | A | Inst #10 : DEC -(SP)
+0340 | B | Inst #11 : DEC (AC)
+0004 | C | 
+0341 | D | Inst #12 : DEC (X)
+0004 | E | 
+0342 | F | Inst #13 : DEC (SP)
+0004 | 10 | 
+0343 | 11 | Inst #14 : DEC (PC)
+0004 | 12 | 
+0350 | 13 | Inst #15 : DEC 0025
+0025 | 14 | 
+0351 | 15 | Inst #16 : DEC 0027
+0027 | 16 | 
+0352 | 17 | Inst #17 : DEC 0029
+0029 | 18 | 
+0353 | 19 | Inst #18 : DEC 002B
+002B | 1A | 
+0300 | 1B | Inst #19 : DEC AC
+0301 | 1C | Inst #20 : DEC X
+0302 | 1D | Inst #21 : DEC SP
+0000 | 1E | 
+0000 | 1F | 
+0000 | 20 | 
+0000 | 21 | 
+0000 | 22 | 
+0000 | 23 | 
+0000 | 24 | 
+0000 | 25 | 
+0000 | 26 | 
+0000 | 27 | 
+0000 | 28 | 
+0000 | 29 | 
+0000 | 2A | HALT
+0000 | 2B | 
+************* end testa
+
+// FOR FADF at M(4) equivalent to 0520
+************* start testb
+0020 AC = R0
+0022 X = R1
+0024 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+0510 | 0 | Inst #1 : COMP (AC)
+0511 | 1 | Inst #2 : COMP (X)
+0512 | 2 | Inst #3 : COMP (SP)
+0513 | 3 | Inst #4 : COMP (PC)
+FADF | 4 | 
+0521 | 5 | Inst #5 : COMP (X)+
+0522 | 6 | Inst #6 : COMP (SP)+
+0523 | 7 | Inst #7 : COMP (PC)+
+FFFF | 8 | 
+0530 | 9 | Inst #8 : COMP -(AC)
+0531 | A | Inst #9 : COMP -(X)
+0532 | B | Inst #10 : COMP -(SP)
+0540 | C | Inst #11 : COMP (AC)
+0004 | D | 
+0541 | E | Inst #12 : COMP (X)
+0004 | F | 
+0542 | 10 | Inst #13 : COMP (SP)
+0004 | 11 | 
+0543 | 12 | Inst #14 : COMP (PC)
+000E | 13 | 
+0550 | 14 | Inst #15 : COMP 0025
+0025 | 15 | 
+0551 | 16 | Inst #16 : COMP 0027
+0027 | 17 | 
+0552 | 18 | Inst #17 : COMP 0029
+0029 | 19 | 
+0553 | 1A | Inst #18 : COMP 002B
+002B | 1B | 
+0500 | 1C | Inst #19 : COMP AC
+0501 | 1D | Inst #20 : COMP X
+0502 | 1E | Inst #21 : COMP SP
+0000 | 1F | 
+0000 | 20 | 
+0000 | 21 | 
+0000 | 22 | 
+0000 | 23 | 
+0000 | 24 | 
+0000 | 25 | 
+0000 | 26 | 
+0000 | 27 | 
+0000 | 28 | 
+0000 | 29 | 
+0000 | 2A | 
+0000 | 2B | HALT
+0000 | 2C | 
+************* end testb
+
+************* start testc
+0021 AC = R0
+0023 X = R1
+0025 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+0800 | 0 | Inst #1 : TST AC
+0801 | 1 | Inst #2 : TST X
+0802 | 2 | Inst #3 : TST SP
+0803 | 3 | Inst #4 : TST PC
+0810 | 4 | Inst #5 : TST (AC)
+0811 | 5 | Inst #6 : TST (X)
+0812 | 6 | Inst #7 : TST (SP)
+0813 | 7 | Inst #8 : TST (PC)
+0820 | 8 | Inst #9 : TST (AC)+
+0821 | 9 | Inst #10 : TST (X)+
+0822 | A | Inst #11 : TST (SP)+
+0823 | B | Inst #12 : TST (PC)+
+FFFF | C | 
+0830 | D | Inst #13 : TST -(AC)
+0831 | E | Inst #14 : TST -(X)
+0832 | F | Inst #15 : TST -(SP)
+0840 | 10 | Inst #16 : TST (AC)
+0004 | 11 | 
+0841 | 12 | Inst #17 : TST (X)
+0004 | 13 | 
+0842 | 14 | Inst #18 : TST (SP)
+0004 | 15 | 
+0843 | 16 | Inst #19 : TST (PC)
+0004 | 17 | 
+0850 | 18 | Inst #20 : TST 0027
+0027 | 19 | 
+0851 | 1A | Inst #21 : TST 0029
+0029 | 1B | 
+0852 | 1C | Inst #22 : TST 002B
+002B | 1D | 
+0853 | 1E | Inst #23 : TST 002D
+002D | 1F | 
+0000 | 20 | 
+0000 | 21 | 
+0000 | 22 | 
+0000 | 23 | 
+0000 | 24 | 
+0000 | 25 | 
+0000 | 26 | 
+0000 | 27 | 
+0000 | 28 | 
+0000 | 29 | 
+0000 | 2A | 
+0000 | 2B | 
+0000 | 2C | HALT
+0000 | 2D | 
+************* end testc
+
+************* start testd
+001D AC = R0
+001F X = R1
+0021 SP = R2
+0000 PC = R3
+3111 CVZN = CC
+3103 | 0 | Inst #1 : MOVE (AC), PC
+FFFF | 1 | 
+3107 | 2 | Inst #2 : MOVE (X), PC
+FFFF | 3 | 
+310B | 4 | Inst #3 : MOVE (SP), PC
+FFFF | 5 | 
+310F | 6 | Inst #4 : MOVE (PC), PC
+0008 | 7 | 
+0200 | 8 | Inst #5 : INC AC
+0201 | 9 | Inst #6 : INC X
+0202 | A | Inst #7 : INC SP
+3203 | B | Inst #8 : MOVE (AC)+, PC
+FFFF | C | 
+3207 | D | Inst #9 : MOVE (X)+, PC
+FFFF | E | 
+320B | F | Inst #10 : MOVE (SP)+, PC
+FFFF | 10 | 
+320F | 11 | Inst #11 : MOVE (PC)+, PC
+0012 | 12 | 
+0200 | 13 | Inst #12 : INC AC
+0201 | 14 | Inst #13 : INC X
+0202 | 15 | Inst #14 : INC SP
+3303 | 16 | Inst #15 : MOVE -(AC), PC
+FFFF | 17 | 
+3307 | 18 | Inst #16 : MOVE -(X), PC
+FFFF | 19 | 
+330B | 1A | Inst #17 : MOVE -(SP), PC
+FFFF | 1B | 
+0000 | 1C | HALT
+0002 | 1D | 
+0004 | 1E | 
+0006 | 1F | 
+000D | 20 | 
+000F | 21 | 
+0011 | 22 | 
+0018 | 23 | 
+001A | 24 | 
+001C | 25 | 
+************* end testd
+
+************* start teste
+0000 AC = R0
+0000 X = R1
+0000 SP = R2
+0000 PC = R3
+0000 CVZN = CC
+3000 | 0 | Inst #1 : MOVE AC, AC
+3004 | 1 | Inst #2 : MOVE X, AC
+3008 | 2 | Inst #3 : MOVE SP, AC
+300C | 3 | Inst #4 : MOVE PC, AC
+3104 | 4 | Inst #5 : MOVE (X), AC
+3108 | 5 | Inst #6 : MOVE (SP), AC
+310C | 6 | Inst #7 : MOVE (PC), AC
+3204 | 7 | Inst #8 : MOVE (X)+, AC
+3208 | 8 | Inst #9 : MOVE (SP)+, AC
+3304 | 9 | Inst #10 : MOVE -(X), AC
+3308 | A | Inst #11 : MOVE -(SP), AC
+3404 | B | Inst #12 : MOVE 000E(X), AC
+000E | C | 
+3408 | D | Inst #13 : MOVE 000E(SP), AC
+000E | E | 
+340C | F | Inst #14 : MOVE 000E(PC), AC
+000E | 10 | 
+3504 | 11 | Inst #15 : MOVE 000E, AC
+000E | 12 | 
+3508 | 13 | Inst #16 : MOVE 000E, AC
+000E | 14 | 
+350C | 15 | Inst #17 : MOVE 000E, AC
+000E | 16 | 
+3600 | 17 | Inst #18 : MOVE #000E, AC
+000E | 18 | 
+3604 | 19 | Inst #19 : MOVE #000E, AC
+000E | 1A | 
+3608 | 1B | Inst #20 : MOVE #000E, AC
+000E | 1C | 
+360C | 1D | Inst #21 : MOVE #000E, AC
+000E | 1E | 
+0000 | 1F | HALT
+************* end teste
+
+************* start testf
+0017 AC = R0
+0019 X = R1
+001B SP = R2
+0000 PC = R3
+3000 CVZN = CC
+3001 | 0 | Inst #1 : MOVE AC, X
+3005 | 1 | Inst #2 : MOVE X, X
+3009 | 2 | Inst #3 : MOVE SP, X
+300D | 3 | Inst #4 : MOVE PC, X
+3101 | 4 | Inst #5 : MOVE (AC), X
+3109 | 5 | Inst #6 : MOVE (SP), X
+310D | 6 | Inst #7 : MOVE (PC), X
+3201 | 7 | Inst #8 : MOVE (AC)+, X
+3209 | 8 | Inst #9 : MOVE (SP)+, X
+3301 | 9 | Inst #10 : MOVE -(AC), X
+3309 | A | Inst #11 : MOVE -(SP), X
+3401 | B | Inst #12 : MOVE 000E(AC), X
+000E | C | 
+3409 | D | Inst #13 : MOVE 000E(SP), X
+000E | E | 
+340D | F | Inst #14 : MOVE 000E(PC), X
+000E | 10 | 
+3501 | 11 | Inst #15 : MOVE 000E, X
+000E | 12 | 
+3509 | 13 | Inst #16 : MOVE 000E, X
+000E | 14 | 
+350D | 15 | Inst #17 : MOVE 000E, X
+000E | 16 | 
+3601 | 17 | Inst #18 : MOVE #000E, X
+000E | 18 | 
+3605 | 19 | Inst #19 : MOVE #000E, X
+000E | 1A | 
+3609 | 1B | Inst #20 : MOVE #000E, X
+000E | 1C | 
+360D | 1D | Inst #21 : MOVE #000E, X
+000E | 1E | 
+0000 | 1F | HALT
+************* end testf
