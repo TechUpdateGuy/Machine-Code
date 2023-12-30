@@ -1,0 +1,773 @@
+~~~~~~~~~~~:: STATE TABLE ::~~~~~~~~~~
+•
+•  Read Instruction = 0 - 4
+•  OPCODE Instruction Detection = 5 
+•  Addressing Mode = 6
+•  Memory Write = 110
+•  Instruction Set = 200
+•  HALT = 260
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+***  Start fetch cycle ***
+  st=0   rt='[pc] -> mar'               imar rac=1 rn=3
+  st=1   rt='[[mar]] -> mdr'            read
+  st=2   rt='[mdr] -> ir'               omdr iir
+  st=3   rt='[pc]+1 -> q'               ib p1 oadder rac=1 rn=3 
+  st=4   rt='[q] -> pc'                 oq wac=1 wn=3
+
+* CHECK ADDRESSING MODE
+       nst=6
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+****** OPCODE DETECTION ******
+  st=5   rt='PLACEHOLDER'      
+**** DOUBLE OPERAND: BIT 15 - 12 ****
+* #1 ADD
+       cond='ir1512' value=1 nst=350
+
+* #2 SUB
+       cond='ir1512' value=2 nst=360
+
+* #3 MOVE
+       cond='ir1512' value=3 nst=370
+
+* #4 EXG
+       cond='ir1512' value=4 nst=380
+
+* #5 OR
+       cond='ir1512' value=5 nst=390
+
+* #6 AND
+       cond='ir1512' value=6 nst=400
+
+
+**** SINGLE OPERAND BIT 11 - 8 ****
+* #1 CLR
+       cond='ir118' value=1 nst=270
+
+* #2 INC
+       cond='ir118' value=2 nst=280
+
+* #3 DEC
+       cond='ir118' value=3 nst=290
+
+* #4 NEG
+       cond='ir118' value=4 nst=300
+
+* #5 COMP
+       cond='ir118' value=5 nst=310
+
+* #6 JMP
+       cond='ir118' value=6 nst=320
+
+* #7 JSR
+       cond='ir118' value=7 nst=330
+
+* #8 TST
+       cond='ir118' value=8 nst=340
+
+**** SPECIAL OPERAND ****
+* #10 DBRA
+       cond='ir118' value=10  nst=200
+
+* #8   RTS
+       cond='ir75'  value=4   nst=230
+## RTS Instruction will check if BITS 4-0 are not 0s and JMP to Branches
+
+* #8,9,A ALL BRANCHES 92_BEQ, 82_BNE, 91_BMI, 81_BPL, 9A_BLS, BA_BHI 
+       cond='ir76'  value=2   nst=210
+
+* #32 SC/CC
+       cond='ir5'  value=1   nst=240
+
+* #0 HALT
+       nst=260
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+****** ADDRESSING MODE ******
+
+  st=6   rt='PLACEHOLDER'      
+
+* NOTE: 
+*
+*       If   DST in Ad. Mode   ,1,2,3,4,5
+*       then SRC allowed are  0,-,-,-,-,-,6
+*
+*       else DST in Ad. Mode  0
+*       then SRC allowed are  0,1,2,3,4,5,6
+*
+*       HALT If DST in Ad. Mode 6
+*   
+*       If  INSTRUCTION IS JMP, JSR, TST
+*       then DST in Ad. Mode 0,6 is not allowed.
+*       
+*       If  INSTRUCTION IS DBRA // Special Case
+*       then DST in Ad. Mode 6 is not allowed.
+*            
+*       SKIP ADDRESSING MODE IF EXLUSIVE SPECIAL OPERAND
+*       
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ALLOWED ADDRESSING MODES PER INSTRUCTION                 !
+!                                                          !
+! KEY:                                                     !
+!     R ->  If SAD = 0-6, then DAD = 0                     !
+!           If DAD = 0-5, then SAD = 0 OR 6                !
+!     S ->  Source only                                    !
+!     D ->  Destination Only                               !
+!     B ->  Both Source or Destination                     !
+!     A(S/D) ->  Address of Source or Destination          !
+!                                                          !
+! ---------------------------------------------------------!
+! INST  | Rn  | (Rb)  | (Rn)+ | -(Rn) | n(Rn) |   n  | #n  !
+! ---------------------------------------------------------!
+! ------------------ DOUBLE OPERANDS ----------------------!
+! ADD   |  B  |   R   |   R   |   R   |   R   |   R  |  S  !
+! SUB   |  B  |   R   |   R   |   R   |   R   |   R  |  S  !
+! MOVE  |  B  |   R   |   R   |   R   |   R   |   R  |  S  !
+! EXG   |  B  |   R   |   R   |   R   |   R   |   R  |  S  !
+! OR    |  B  |   R   |   R   |   R   |   R   |   R  |  S  !
+! AND   |  B  |   R   |   R   |   R   |   R   |   R  |  S  !
+! ------------------ SINGLE OPERANDS ----------------------!
+! CLR   |  D  |   D   |   D   |   D   |   D   |   D  |     !
+! INC   |  D  |   D   |   D   |   D   |   D   |   D  |     !
+! DEC   |  D  |   D   |   D   |   D   |   D   |   D  |     !
+! NEG   |  D  |   D   |   D   |   D   |   D   |   D  |     !
+! COMP  |  D  |   D   |   D   |   D   |   D   |   D  |     !
+! JMP   |     | A(D)  |  A(D) | A(D)  | A(D)  | A(D) |     !
+! JSR   |     | A(D)  |  A(D) | A(D)  | A(D)  | A(D) |     !
+! TST   |  D  |   D   |   D   |   D   |   D   |   D  |     !
+! -------------- SPECIAL & SINGLE OPERAND -----------------!
+! DBRA  |  D  |   D   |   D   |   D   |   D   |   D  |     !
+! ------------------ SPECIAL OPERANDS ---------------------!
+! RTS   |     |       |       |       |       |      |     !
+! IBRCH |     |       |       |       |       |      |     !
+! SC/CC |     |       |       |       |       |      |     !
+! HALT  |     |       |       |       |       |      |     !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+*********************************
+/// TEMP REGISTER DESCRIPTION ///
+*********************************
+
+** T1: Initial Value ([S] or [D]) **
+** q: Calculated Effective Address or EA **
+** T2: Save src EA
+** T3: Save src [EA] **
+** T4: Save dst EA **
+** T5: Save dst [EA] **
+
+
+*********************************
+/// SPECIAL INSTRUCTIONS SKIP ///
+*********************************
+
+       cond='ir158' value=0 nst=5
+
+*********************************
+//////// MODE CONSTRAINS ////////
+*********************************
+     
+**** Validate D.A.D for Single Operand ****
+       cond='ir7'   value=1 nst=260
+       cond='ir64'  value=7 nst=260
+       cond='ir1512'value=0 nst=12
+**** Validate S.A.D and D.A.D for Double Operand ****
+       cond='ir11'  value=1 nst=260
+       cond='ir118' value=7 nst=260
+       cond='ir64'  value=0 nst=8
+       cond='ir64'  value=6 nst=260
+       cond='ir64'  value=1 nst=7
+       cond='ir64'  value=2 nst=7
+       cond='ir64'  value=3 nst=7
+       cond='ir64'  value=4 nst=7
+       cond='ir64'  value=5 nst=7
+  st=7   rt='PLACEHOLDER'      
+       cond='ir118' value=0 nst=8
+       cond='ir118' value=6 nst=8 
+       nst=260
+
+*********************************
+///////// LIST OF MODES /////////
+*********************************
+
+* 0: Register          | Rk means [RK]
+
+*      S.A.D
+  st=8   rt='PLACEHOLDER'
+* CHECK DESTINATION IF SINGLE OPERAND      
+       cond='ir1512' value=0 nst=12
+* EXCLUSION JMP
+       cond='ir158' value=6  nst=16
+* EXCLUSION JSR
+       cond='ir158' value=7  nst=16
+* START CHECKING SOURCE ADDRESING MODE
+       cond='ir118' value=0 nst=11
+       nst=16
+*  st=9   rt='-1 -> q'                   comp oadder
+*  st=10   rt='q -> t2'                  oq it2
+  st=11   rt='[src Rk] -> t3'            rac=2 it3
+       nst=12
+
+*      D.A.D
+  st=12   rt='PLACEHOLDER'      
+       cond='ir64'  value=0 nst=15
+       nst=21
+*  st=13   rt='-1 -> q'                  comp oadder
+*  st=14   rt='q -> t4'                  oq it4
+  st=15   rt='src [Rk] -> t5'            rac=3 it5
+       nst=5
+
+* 1: Register Indirect | (Rk) means [[Rk]]
+
+*      S.A.D
+  st=16   rt='PLACEHOLDER'      
+       cond='ir118'   value=1 nst=17
+       nst=26
+  st=17   rt='src [Rk] -> t2'            rac=2 it2
+  st=18   rt='[t2] -> mar'               ot2 imar
+  st=19   rt='[[mar]] -> mdr'            read
+  st=20   rt='[mdr] -> t3'               omdr it3
+       nst=12
+
+*      D.A.D
+  st=21   rt='PLACEHOLDER'      
+       cond='ir64'   value=1 nst=22
+       nst=33
+  st=22   rt='dst [[Rk]] -> t4'          rac=3 it4
+* EXCLUSION JMP
+       cond='ir158' value=6  nst=5
+* EXCLUSION JSR
+       cond='ir158' value=7  nst=5
+  st=23   rt='[t4] -> mar'               ot4 imar
+  st=24   rt='[[mar]] -> mdr'            read
+  st=25   rt='[mdr] -> t5'               omdr it5
+       nst=5
+
+* 2: Autoincrement     | (Rk)+ means [[RK]] then [Rk]+1 -> [Rk]
+
+*      S.A.D
+  st=26   rt='PLACEHOLDER'      
+* EVERYTHING ELSE
+       cond='ir118'   value=2  nst=27
+       nst=40
+  st=27   rt='src [Rk] -> t2'            rac=2 it2
+  st=28   rt='[t2] -> mar'               ot2 imar
+  st=29   rt='[[mar]] -> mdr'            read
+  st=30   rt='[mdr] -> t3'               omdr it3
+*  st=31   rt='[t2] + 1 -> q'            ot2 ib p1 oadder
+*  st=32   rt='q -> src [Rk]'            wac=2 oq 
+       nst=12
+
+*      D.A.D
+  st=33   rt='PLACEHOLDER'      
+* EVERYTHING ELSE
+       cond='ir64'   value=2  nst=34
+       nst=48
+  st=34   rt='dst [[Rk]] -> t4'          rac=3 it4
+*  st=##   rt='[t4] + 1 -> q'             ot4 ib p1 oadder
+*  st=##   rt='q -> dst [Rk]'             wac=3 oq
+* EXCLUSION JMP
+       cond='ir158' value=6  nst=5
+* EXCLUSION JSR
+       cond='ir158' value=7  nst=5
+  st=35   rt='[t4] -> mar'               ot4 imar
+  st=36   rt='[[mar]] -> mdr'            read
+  st=37   rt='[mdr] -> t5'               omdr it5
+       nst=5
+
+* 3: Autodecrement     | -(Rk) means [Rk]-1 -> [Rk] then [[Rk]]
+
+*      S.A.D
+  st=40   rt='PLACEHOLDER'      
+* EVERYTHING ELSE
+       cond='ir118' value=3  nst=41
+       nst=56
+  st=41   rt='src [Rk] -> t1'            rac=2 it1
+  st=42   rt='[t1] - 1 -> q'             oa comp oadder
+  st=43   rt='[q] -> t2'                 oq it2
+  st=44   rt='[t2] -> mar'               ot2 imar
+  st=45   rt='[[mar]] -> mdr'            read
+  st=46   rt='[mdr] -> t3'               omdr it3
+  st=47   rt='t2 -> src [Rk]'            wac=2 oq 
+       nst=12
+
+*      D.A.D
+  st=48   rt='PLACEHOLDER'      
+* EVERYTHING ELSE
+       cond='ir64'   value=3  nst=49 
+       nst=67
+  st=49   rt='src [Rk] -> t1'            rac=3 it1
+  st=50   rt='[t1] - 1 -> q'             oa comp oadder
+  st=51   rt='[q] -> t4'                 oq it4
+  st=52   rt='q -> dst [Rk]'             wac=3 oq
+* EXCLUSION JMP
+       cond='ir158' value=6  nst=5
+* EXCLUSION JSR
+       cond='ir158' value=7  nst=5
+  st=53   rt='[t4] -> mar'               ot4 imar
+  st=54   rt='[[mar]] -> mdr'            read
+  st=55   rt='[mdr] -> t5'               omdr it5
+       nst=5
+
+* 4: Index             | n(Rk) means [n+[RK]]
+
+*      S.A.D
+  st=56   rt='PLACEHOLDER'      
+       cond='ir118'   value=4  nst=57 
+       nst=78
+  st=57   rt='src [Rk] -> t1'            rac=2 it1
+  st=58   rt='[pc] -> mar'               rac=1 rn=3 imar
+  st=59   rt='[pc] + 1 -> q'             rac=1 rn=3 ib p1 oadder
+  st=60   rt='[q] -> pc'                 oq wac=1 wn=3
+  st=61   rt='[[mar]] -> mdr'            read
+  st=62   rt='[t1] + [mdr] -> q'         omdr ib oa oadder
+  st=63   rt='[q] -> t2'                 oq it2
+  st=64   rt='[t2] -> mar'               ot2 imar
+  st=65   rt='[[mar]] -> mdr'            read
+  st=66   rt='[mdr] -> t3'               omdr it3
+       nst=12
+
+*      D.A.D
+  st=67   rt='PLACEHOLDER'      
+       cond='ir64'   value=4  nst=68
+       nst=87
+  st=68   rt='dst [Rk] -> t1'            rac=3 it1
+  st=69   rt='[pc] -> mar'               rac=1 rn=3 imar
+  st=70   rt='[pc] + 1 -> q'             rac=1 rn=3 ib p1 oadder
+  st=71   rt='[q] -> pc'                 oq wac=1 wn=3
+  st=72   rt='[[mar]] -> mdr'            read
+  st=73   rt='[t1] + [mdr] -> q'         omdr oa oadder ib
+  st=74   rt='[q] -> t4'                 oq it4
+* EXCLUSION JMP
+       cond='ir158' value=6  nst=5
+* EXCLUSION JSR
+       cond='ir158' value=7  nst=5
+  st=75   rt='[t2] -> mar'               ot4 imar
+  st=76   rt='[[mar]] -> mdr'            read
+  st=77   rt='[mdr] -> t5'               omdr it5
+       nst=5
+
+* 5: Absolute          | n means [n]
+
+*      S.A.D
+  st=78   rt='PLACEHOLDER'      
+       cond='ir118'   value=5 nst=79
+       nst=96
+  st=79   rt='[pc] -> mar'               rac=1 rn=3 imar
+  st=80   rt='[pc] + 1 -> q'             rac=1 rn=3 ib p1 oadder
+  st=81   rt='[q] -> pc'                 oq wac=1 wn=3
+  st=82   rt='[[mar]] -> mdr'            read
+  st=83   rt='[mdr] -> t2'               omdr it2
+  st=84   rt='[t2] -> mar'               ot2 imar
+  st=85   rt='[[mar]] -> mdr'            read
+  st=86   rt='[mdr] -> t3'               omdr it3
+       nst=12
+
+*      D.A.D
+  st=87   rt='PLACEHOLDER'      
+       cond='ir64' value=5  nst=88
+       nst=103
+  st=88   rt='[pc] -> mar'               rac=1 rn=3 imar
+  st=89   rt='[pc] + 1 -> q'             rac=1 rn=3 ib p1 oadder
+  st=90   rt='[q] -> pc'                 oq wac=1 wn=3
+  st=91   rt='[[mar]] -> mdr'            read
+  st=92   rt='[mdr] -> t4'               omdr it4
+* EXCLUSION JMP
+       cond='ir158' value=6  nst=5
+* EXCLUSION JSR
+       cond='ir158' value=7  nst=5
+  st=93   rt='[t4] -> mar'               ot4 imar
+  st=94   rt='[[mar]] -> mdr'            read
+  st=95   rt='[mdr] -> t5'               omdr it5
+       nst=5
+
+* 6: Immediate         | #n means n
+
+
+*      S.A.D
+  st=96   rt='PLACEHOLDER'      
+       cond='ir118'   value=6  nst=97
+       nst=260
+  st=97   rt='[pc] -> t2'                rac=1 rn=3 it2
+  st=98   rt='[pc] + 1 -> q'             rac=1 rn=3 ib p1 oadder
+  st=99   rt='[q] -> pc'                 oq wac=1 wn=3
+  st=100   rt='[t2] -> mar'              ot2 imar  
+  st=101   rt='[[mar]] -> mdr'           read
+  st=102   rt='[mdr] -> t3'              omdr it3
+       nst=12
+
+*      D.A.D
+// NO IMMEDIATE DESTINATION ALLOWED FOR SAVING VALUE 
+  st=103   rt='PLACEHOLDER'
+       cond='ir64'   value=6 nst=260
+       nst=260
+  st=104   rt='[pc] -> t4'                rac=1 rn=3 it4
+  st=105   rt='[pc] + 1 -> q'             rac=1 rn=3 ib p1 oadder
+  st=106   rt='[q] -> pc'                 oq wac=1 wn=3
+  st=107   rt='[t4] -> mar'               ot4 imar
+  st=108   rt='[[mar]] -> mdr'            read
+  st=109   rt='[mdr] -> t5'               omdr it5
+       nst=5
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**** SAVE RESULTS FROM INSTRUCTIONS ****
+ 
+*******************************
+//////// WRITE FOR SRC ////////
+*******************************
+  st=110   rt='PLACEHOLDER' 
+       cond='ir118' value=0  nst=114
+* MEMORY WRITE
+  st=111 rt='src -> mar'                  ot2 imar
+  st=112 rt='[src] -> mdr'                ot3 imdr
+  st=113 rt='[mdr] -> mar'                write
+       nst=115
+* REGISTER WRITE
+  st=114 rt='[src] -> Source Register'    ot3 wac=2
+  
+*******************************
+//////// WRITE FOR DST ////////
+*******************************
+
+  st=115   rt='PLACEHOLDER'          
+       cond='ir64' value=0  nst=119
+* MEMORY WRITE
+  st=116 rt='dst -> mar'                  ot4 imar
+  st=117 rt='[dst] -> mdr'                ot5 imdr
+  st=118 rt='[mdr] -> mar'                write
+       nst=120
+* REGISTER WRITE
+  st=119 rt='[dst] -> Dest. Register'     ot5 wac=3
+
+********************************************
+// SPECIAL CASES: ADDITIONAL DATA UPDATES //
+********************************************
+
+* 2 | (Rn)+ | AUTOINCREMENT AFTER INSTRUCTION EXECUTION
+
+* Check If on Double Operand Mode
+  st=120   rt='PLACEHOLDER'
+       cond='ir158' value=0  nst=150
+       nst=121
+       
+* SAD MODE
+  st=121   rt='PLACEHOLDER'
+       cond='ir1512'  value=0  nst=124
+       cond='ir118'  value=2  nst=122
+       nst=124
+  st=122   rt='[t2] + 1 -> q'             rac=2 ib p1 oadder
+  st=123   rt='q -> src [Rk]'             wac=2 oq 
+
+* DAD MODE
+  st=124   rt='PLACEHOLDER'  
+       cond='ir64'   value=2  nst=125
+       nst=150
+  st=125  rt='[t4] + 1 -> q'              rac=3 ib p1 oadder
+  st=126   rt='q -> dst [Rk]'             wac=3 oq
+       nst=150
+
+*******************************
+/// DATA TRANSFER COMPLETE  ///
+*******************************
+* MFC: Reg.
+  st=150   rt='PLACEHOLDER'  
+       nst=0  
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+****** INSTRUCTION SET ******
+
+*******************************
+//////// SPECIAL OPERAND //////
+*******************************
+
+**** #10 DBRA execution cycle ****
+* Decrement DST
+
+  st=200   rt='[dst] -> t1'               ot5 it1
+  st=201   rt='[dst] - 1 -> q'            oa comp oadder
+  st=202   rt='q -> t5'                   oq it5
+
+* IF [dst] is Negative, PC = [PC] + 1, ELSE [PC] = [PC] + Offset
+       cond='busn' value=0 nst=204
+* Double Check If Orginal Value was Zero. IF ORIGNAL [dst] == 0, THEN FALSE, ELSE TRUE   
+  st=203   rt='t5 -> q'                   it5 oq
+       cond='busz' value=1 nst=208
+       nst=204
+* DECREMENT CONDITION TRUE - DO OFFSET
+  st=204   rt='[pc] -> t1, imar'          rac=1 rn=3 imar it1
+  st=205   rt='[[mar]] -> mdr'            read
+  st=206   rt='([pc]+1) + [offset] -> q'  oa omdr ib p1 oadder
+  st=207   rt='[q] -> PC'                 oq wac=1 wn=3    
+       nst=115
+* DECREMENT CONDITION FALSE - IGNORE OFFEST
+  st=208   rt='[pc] + 1 -> q'             rac=1 rn=3 ib p1 oadder
+  st=209   rt='q -> pc'                   oq wac=1 wn=3
+       nst=115
+ 
+**** BRANCHES: BEQ, BNE, BMI, BPL, BLS, BHI ****
+## Send to Bracnch only If Bit 4-0 either 1,2 or A
+  st=210   rt='PLACEHOLDER'      
+       cond='ir0' value=1 nst=211
+       cond='ir1' value=0 nst=260
+       cond='ir2' value=1 nst=260
+       nst=212
+* Check if BITS1-3 are NOT 1 TO CHECK VALUE IS TRULY 1
+  st=211   rt= ''      
+       cond='ir1' value=1 nst=260
+       cond='ir2' value=1 nst=260
+       cond='ir3' value=1 nst=260
+       nst=212
+* CHECK BRANCHES
+  st=212  
+       cond='ir5' value=1 nst=214   
+  st=213 
+       cond='ibrch' value=0 nst=220
+       nst=215
+* FLIP IF IR BIT5 = 1 (INVERT RESULTS)
+  st=214
+       cond='ibrch' value=1 nst=220
+       nst=215
+
+
+* BRANCH DEFAULTS TO TRUE
+  st=215   rt='[pc] -> t1'                rac=1 rn=3 it1
+  st=216   rt='t1 -> mar'                 ot1 imar
+  st=217   rt='[[mar]] -> mdr'            read
+  st=218   rt='([pc] + 1) + Offset ->  q' oa omdr ib p1 oadder
+  st=219   rt='([pc] + 1) + Offset -> PC' oq wac=1 wn=3 
+       nst=120
+
+* BRANCH DEFAULTS TO FALSE
+  st=220   rt='[pc] + 1 -> q'             rac=1 rn=3 ib p1 oadder
+  st=221   rt='[pc] + 1 -> PC'            oq wac=1 wn=3  
+       nst=120   
+
+**** RTS execution cycle ****
+  st=230   rt= '' 
+* CHECK IF BITS 3-0 have all 0s
+       cond='ir3' value=1 nst=210
+       cond='ir2' value=1 nst=210
+       cond='ir1' value=1 nst=210
+       cond='ir0' value=1 nst=210
+       nst=231
+ 
+  st=231   rt='[sp] -> t1'                rac=1 rn=2 it1
+  st=232   rt='[t1] -> mar'               ot1 imar
+  st=233   rt='[[mar]] -> mdr'            read
+  st=234   rt='[[sp]] -> PC'              omdr wac=1 wn=3
+  st=235   rt='[sp] + 1 -> q'             oa p1 oadder
+  st=236   rt='[sp] + 1 -> sp'            oq wac=1 wn=2 
+       nst=120
+
+**** SC/CC execution cycle ****
+  st=240   rt='CLEAR'      
+       cond='ir4' value=1 nst=241
+       cond='ir3' value=1 nst=242
+       cond='ir2' value=1 nst=243
+       cond='ir1' value=1 nst=244
+       cond='ir0' value=1 nst=246
+       nst=120
+
+  st=241   rt='SET'      
+       cond='ir3' value=1 nst=248
+       cond='ir2' value=1 nst=249
+       cond='ir1' value=1 nst=250
+       cond='ir0' value=1 nst=252
+       nst=120
+        
+  st=242   rt='CLRC'                      CLRC 
+       nst=120
+  st=243   rt='CLRV'                      CLRV 
+       nst=120
+  st=244   rt='CLRZ'                      oadder p1 
+  st=245                                  oq NEWZ
+       nst=120
+  st=246   rt='CLRN'                      oadder 
+  st=247                                  oq NEWN 
+       nst=120
+  st=248   rt='SETC'                      SETC 
+       nst=120
+  st=249   rt='SETV'                      SETV 
+       nst=120
+  st=250   rt='SETZ'                      oadder 
+  st=251                                  oq NEWZ
+       nst=120
+  st=252   rt='SETN'                      oadder comp
+  st=253                                  oq NEWN
+       nst=120
+**** HALT execution cycle ****
+  st=260 halt
+
+*******************************
+//////// SINGLE OPERAND //////
+*******************************
+
+**** #1 CLR: ****
+* NOTE: ONLY Z=1
+
+  st=270   rt='0 -> q'                    oadder CLRC CLRV
+  st=271   rt='q -> dst'                  oq it5 NEWN NEWZ 
+       nst=115
+
+**** #2 INC: ****
+* NOTE: 
+
+  st=280   rt='[dst] + 1 -> q '           ot5 ib p1 oadder NEWC NEWV
+  st=281   rt='q -> dst'                  oq it5 NEWN NEWZ
+       nst=115
+
+**** #3 DEC: ****
+* NOTE: 
+
+  st=290   rt='[dst] -> t1'               ot5 it1
+  st=291   rt='[t1] - 1 -> q'             oa comp oadder NEWC NEWV
+  st=292   rt='q -> dst'                  oq it5  NEWN NEWZ
+       nst=115
+
+**** #4 NEG : Negate a number ****
+* NOTE: Calculate in 2's Compliment
+
+  st=300   rt='0-[dst] -> q'              ot5 ib comp p1 oadder NEWC NEWV
+  st=301   rt='[q] -> dst'                oq it5 NEWZ NEWN
+       nst=115
+
+**** #5 COMP: ****
+* NOTE: 
+
+  st=310   rt='COMP[dst] -> q'            ot5 ib comp oadder CLRC CLRV
+  st=311   rt='[q] -> dst'                oq it5 NEWZ NEWN
+       nst=115
+
+**** #6 JMP: ****
+* NOTE: 
+
+  st=320   rt='EA(dst) -> PC'             ot4 wac=1 wn=3  
+       nst=120
+
+**** #7 JSR: ****
+* NOTE: 
+
+  st=330   rt='[SP] -> t1'                rac=1 rn=2 it1
+  st=331   rt='[t1] - 1 -> q'             oa comp oadder
+  st=332   rt='q -> SP'                   oq wac=1 wn=2
+  st=333   rt='[SP/T1] -> MAR'            oq imar
+  st=334   rt='[PC UPD] -> MDR'           rac=1 rn=3 imdr
+  st=335   rt='[MDR] -> MAR'              write
+  st=336   rt='EA(dst) -> PC'             ot4 wac=1 wn=3
+       nst=120
+
+**** #8 TST: ****
+* NOTE: 
+
+  st=340   rt='[dst] -> t1'               ot5 it1
+  st=341   rt='[dst] + (-0) -> q'         oa comp p1 oadder CLRC CLRV
+  st=342   rt = '[q] -> t1'               oq it1 NEWN NEWZ
+       nst=120
+
+*******************************
+//////// DOUBLE OPERAND //////
+*******************************
+
+**** #1 ADD: Addition of 2 values ****
+* NOTE: 
+
+  st=350   rt='[src] -> t1'               ot3 it1
+  st=351   rt='[src] + [dst] -> q'        oa ot5 ib oadder NEWC NEWV
+  st=352   rt='q -> [dst]'                oq it5 NEWZ NEWN
+       nst=115
+
+**** #2 SUB: Subtraction of 2 values  ****
+* NOTE: 
+
+  st=360   rt='[dst] -> t1'               ot5 it1
+  st=361   rt='[dst] - [src]'             oa ot3 ib comp p1 oadder NEWC NEWV
+  st=362   rt='q -> [dst]'                oq it5 NEWZ NEWN
+           cond='c' value=1 nst=364
+  st=363   rt='SET C'                     SETC
+       nst=115
+  st=364   rt='CLR C'                     CLRC 
+       nst=115
+
+**** #3 MOVE: Move value from Source to Destination  ****
+* NOTE: 
+
+  st=370   rt='[src] -> q'                ot3 ib oadder CLRV CLRC
+  st=371   rt='[q] -> dst'                oq it5 NEWN NEWZ 
+       nst=115
+
+**** #4 EXG : Exchange Source and Destination Content ****
+* NOTE: CVZN is not affected
+
+  st=380   rt='[dst] -> q'                ot5 iq
+  st=381   rt='[src] -> dst'              ot3 it5
+  st=382   rt='[q] -> src'                oq it3
+       nst=110
+
+*** #5 OR: Binary OR (|) Operation  ****
+* NOTE: 
+
+* MERGE BUS SIGNALS TO OR
+  st=390   rt='Signal Merge OR'           ot3 ot5 ib oadder CLRC CLRV
+  st=391   rt='q -> [dst]'                oq it5 NEWZ NEWN
+       nst=115
+
+**** #6 AND: Binary AND (&) Operation  ****
+* NOTE: 
+
+* INVERT INPUTS
+
+  st=400   rt='Invert Source'             ot3 ib comp oadder
+  st=401   rt='Save source'               oq it3
+ 
+  st=402   rt='Invert DST'                ot5 ib comp oadder
+  st=403   rt='Save DST'                  oq it5
+ 
+* MERGE BUS SIGNALS TO OR
+
+  st=404   rt='Signal Merge OR'           
+
+* INVERT OUPUT
+
+  st=405   rt='Invert Ouput'              ot3 ot5 ib comp oadder CLRC CLRV
+  st=406   rt='Save Result'               oq it5 NEWZ NEWN
+       nst=115
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+****** TEST SETS ******
+*************
+start test 1
+FF00 AC 
+000F X 
+0012 SP 
+0000 PC 
+0000 CVZN 
+0411 
+4104 
+0421 
+4204 
+0432 
+4031 
+0442 
+FFFF 
+4042 
+FFFE 
+4050 
+000F 
+0450 
+0010 
+0000 
+0001 
+00FF 
+0002
+end test 1
+*************
